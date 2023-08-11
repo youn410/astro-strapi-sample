@@ -1,0 +1,31 @@
+---
+import fetchApi from '../../lib/strapi';
+import type Restaurant from '../../interfaces/restaurant';
+
+export async function getStaticPaths() {
+  const restaurants = await fetchApi<Restaurant[]>({
+    endpoint: 'restaurants',
+    wrappedByKey: 'data',
+  });
+
+  return restaurants.map((restaurant) => ({
+    params: { slug: restaurant.id },
+    props: restaurant,
+  }));
+}
+
+type Props = Restaurant;
+
+const restaurant = Astro.props
+---
+<!DOCTYPE html>
+  <head>
+    <title>{restaurant.attributes.name}</title>
+  </head>
+  <body>
+    <main>
+      <h1>{restaurant.attributes.name}</h1>
+      <p>{restaurant.attributes.description}</p>      
+    </main>
+  </body>
+</html>

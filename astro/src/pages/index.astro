@@ -1,0 +1,27 @@
+---
+import fetchApi from '../lib/strapi';
+import type Restaurant from '../interfaces/restaurant';
+
+const restaurants = await fetchApi<Restaurant[]>({
+  endpoint: 'restaurants',
+  wrappedByKey: 'data'
+});
+---
+<!DOCTYPE html>
+  <head>
+    <title>Strapi & Astro</title>
+  </head>
+  <body>
+    <main>
+      <ul>
+        {
+          restaurants.map((restaurant) => (
+            <a href={`/restaurant/${restaurant.id}`}>
+              {restaurant.attributes.name}
+            </a>
+          ))
+        }
+      </ul>
+    </main>
+  </body>
+</html>
